@@ -25,7 +25,7 @@ const tanStackCustomProvider = () => {
   );
 };
 
-describe("useHeroSummary", () => {
+describe("usePaginatedHero", () => {
   test("Should return the initial state (isLoading)", () => {
     // Si usamos en tankquery debemos aplicar otro metodo que es el wrapper tanStackCustomProvider
     const { result } = renderHook(() => usePaginatedHero(1, 6), {
