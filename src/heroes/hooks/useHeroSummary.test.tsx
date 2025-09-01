@@ -121,4 +121,23 @@ describe("useHeroSummary", () => {
     //Ver con que argumentos fue llamado llama a esa data
     //expect(mockGetSummaryAction).toHaveBeenCalledWith();
   });
+
+  test("should return error state when API call fails", async () => {
+    const mockError = new Error("Failed to fetch summary");
+    mockGetSummaryAction.mockRejectedValue(mockError);
+
+    const { result } = renderHook(() => useHeroSummary(), {
+      wrapper: tanStackCustomProvider(),
+    });
+
+    await waitFor(() => {
+      expect(result.current.isError).toBe(true);
+    });
+
+    expect(result.current.error).toBeDefined();
+    expect(result.current.isLoading).toBe(false);
+    expect(mockGetSummaryAction).toHaveBeenCalled(); // Si fue llamado
+    expect(mockGetSummaryAction).toHaveBeenCalledTimes(1); // Cuantas veces fue llamado por el error, solo sera un por el retry: false,
+    expect(result.current.error?.message).toBe("Failed to fetch summary");
+  });
 });
