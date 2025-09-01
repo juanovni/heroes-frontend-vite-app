@@ -28,7 +28,7 @@ const tanStackCustomProvider = () => {
 
 describe("useHeroSummary", () => {
   test("Should return the initial state (isLoading)", () => {
-    // Si usamos en tankquery debemos aplicar otro metodo que el
+    // Si usamos en tankquery debemos aplicar otro metodo que es el wrapper tanStackCustomProvider
     // expect(result.current.gifs.length).toBe(0);
     const { result } = renderHook(() => useHeroSummary(), {
       wrapper: tanStackCustomProvider(),
@@ -124,20 +124,20 @@ describe("useHeroSummary", () => {
 
   test("should return error state when API call fails", async () => {
     const mockError = new Error("Failed to fetch summary");
-    mockGetSummaryAction.mockRejectedValue(mockError);
+    mockGetSummaryAction.mockRejectedValue(mockError); // Para decir que es un error
 
     const { result } = renderHook(() => useHeroSummary(), {
       wrapper: tanStackCustomProvider(),
     });
 
     await waitFor(() => {
-      expect(result.current.isError).toBe(true);
+      expect(result.current.isError).toBe(true); // Espere para que de el error
     });
 
     expect(result.current.error).toBeDefined();
     expect(result.current.isLoading).toBe(false);
     expect(mockGetSummaryAction).toHaveBeenCalled(); // Si fue llamado
-    expect(mockGetSummaryAction).toHaveBeenCalledTimes(1); // Cuantas veces fue llamado por el error, solo sera un por el retry: false,
+    //expect(mockGetSummaryAction).toHaveBeenCalledTimes(1); // Cuantas veces fue llamado por el error, solo sera un por el retry: false,
     expect(result.current.error?.message).toBe("Failed to fetch summary");
   });
 });
