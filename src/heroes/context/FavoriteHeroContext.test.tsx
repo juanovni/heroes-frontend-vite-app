@@ -1,5 +1,5 @@
 import { use } from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, test } from "vitest";
 import FavoriteHeroContextProvider, {
   FavoriteHeroContext,
@@ -52,5 +52,21 @@ describe("FavoriteHeroContext", () => {
     expect(screen.getByTestId("favorite-count").children.length).toBe(0);
 
     screen.debug();
+  });
+
+  test("should add hero to favorites when toggleFavorite is called with new Hero", () => {
+    renderContextTest();
+    const button = screen.getByTestId("toggle-favorite");
+
+    fireEvent.click(button);
+    // Manda a ejecutar la funcion 
+    //console.log(localStorage.getItem('favorites'));
+
+    expect(screen.getByTestId("favorite-count").textContent).toBe("1");
+    expect(screen.getByTestId("is-favorite").textContent).toBe("true");
+    expect(screen.getByTestId("hero-1").textContent).toBe("batman");
+    expect(localStorage.getItem("favorites")).toBe(
+      '[{"id":"1","name":"batman"}]'
+    );
   });
 });
