@@ -54,7 +54,7 @@ export const HeroStats = () => {
           className="text-xs text-muted-foreground"
           data-testid="favorite-percentage"
         >
-          {((favoriteCount / summary?.totalHeroes) * 100).toFixed(2)}% of total
+          {percFavoriteCount}% of total
         </p>
       </HeroStatCard>
 
